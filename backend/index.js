@@ -13,17 +13,14 @@ import morgan from 'morgan'
 configDotenv()
 const app = express()
 const port = process.env.PORT
-
 connectDatabase()
-console.log('Origin Url', process.env.ORIGIN_URL)
 app.use(morgan('tiny'))
 app.use(
 	cors({
-		origin: `http://localhost:5173`,
+		origin: process.env.ORIGIN_URL,
 		credentials: true,
 	}),
 )
-
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
@@ -33,7 +30,6 @@ app.use('/blog', blogRouter)
 app.use('/comment', commentRouter)
 app.get('/getcurrentuser', (req, res) => {
 	console.log('get current user', req.user)
-
 	const token = req.cookies.sessionId
 	if (token) {
 		jsonwebtoken.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {

@@ -43,8 +43,10 @@ function LoginWithEmail() {
       console.log(err.response.data);
 
       toast({
+        variant: "destructive",
         title: "Failed",
         description: err.response.data.message,
+      
       });
     },
   });

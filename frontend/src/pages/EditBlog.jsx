@@ -19,14 +19,14 @@ import {
     FormMessage,
   } from "@/components/ui/form";
   
-  import { useMutation, useQuery } from "react-query";
+  import { useMutation, useQuery,useQueryClient } from "react-query";
   import { useParams } from "react-router-dom";
   import { useToast } from "../hooks/use-toast";
   import BlogSchema from "../validation/BlogValidation";
-  
   import { getBlogById,updateBlogById } from "../api/QueryFunctions";
   
   function EditBlog() {
+    const queryClient=useQueryClient();
     const params=useParams();
     const { toast } = useToast();
     const mutation = useMutation({
@@ -37,12 +37,14 @@ import {
           title: "success",
           description: data.data.message,
         });
-        form.reset();
+        queryClient.invalidateQueries({ queryKey: ["blogbyid",params.id] });
+        queryClient.setQueryData(['blogbyid'],(data)=>data.data.data)        
+        form.setValue('title',data.data.data.title)
+        form.setValue('content',data.data.data.content)
       },
-      onError: (err) => {
-        console.log(err.response.data);
-  
+      onError: (err) => {  
         toast({
+          variant: "destructive",
           title: "Failed",
           description: err.response.data.message,
         });
@@ -54,8 +56,6 @@ import {
         enabled:!!params.id
     })
     console.log("Blog Data",query?.data?.data.data.title);
-    
-  
     const form = useForm({
       resolver: zodResolver(BlogSchema),
       defaultValues: {

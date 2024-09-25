@@ -8,22 +8,28 @@ import {
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import axiosInstance from "../../axios/axiosInstance";
+
 import { Button } from "@/components/ui/button";
 import { useToast } from "../../hooks/use-toast";
-import { useQueryClient } from "react-query";
+import { useQueryClient, useMutation } from "react-query";
+import { deleteBlogById } from "../../api/QueryFunctions";
 function BlogCard({ title, content, ownerid, blogId }) {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (id) => {
+      return deleteBlogById(id);
+    },
+    onSuccess: () => {
+      toast({ title: "Blog Deleted Successfully", variant: "destructive" });
+      queryClient.invalidateQueries({ queryKey: ["getallblogs"] });
+      queryClient.invalidateQueries({ queryKey: ["blogs"] });
+    },
+  });
   const { toast } = useToast();
   const loggedInUser = useSelector((state) => state.userData.id);
   console.log("blog card state", loggedInUser === ownerid);
   const handleDelete = () => {
-    axiosInstance.delete(`/blog/delete/${blogId}`).then((res) => {
-      if (res) {
-        toast({ title: "Blog Deleted Successfully", variant: "destructive" });
-        queryClient.invalidateQueries({ queryKey: ["getallblogs"] });
-      }
-    });
+    mutation.mutate(blogId);
   };
   return (
     <Card className="sm:col-span-2 mt-4">

@@ -47,3 +47,12 @@ export async function updateBlogById(id,data) {
   let fetchData=await axiosInstance.patch(`blog/update/${id}`,data)
   return fetchData
 }
+export async function  deleteBlogById(id) {
+  let fetchData=await axiosInstance.delete(`blog/delete/${id}`);
+  return fetchData
+}
+export async function LogoutUser() {
+  let fetchData=await axiosInstance.delete("/auth/logout")
+  return fetchData
+  
+}

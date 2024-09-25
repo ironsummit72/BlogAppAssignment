@@ -83,7 +83,7 @@ export async function updateBlog(req, res) {
 			content: zodresult.data.content,
 		})
 		if (blogData) {
-			res.status(200).json(new ApiResponse('success', 200, null, 'Blog updated successfully'))
+			res.status(200).json(new ApiResponse('success', 200, blogData, 'Blog updated successfully'))
 		}
 	}
 }

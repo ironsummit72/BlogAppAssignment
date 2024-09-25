@@ -33,6 +33,8 @@ export async function handleLogin(req, res) {
 				} else {
 					res.status(401).json(new ApiResponse('unauthorized', 401, null, 'Incorrect Password'))
 				}
+			}else{
+				res.status(404).json(new ApiResponse('not found', 404, null, 'User not found please register yourself'))
 			}
 		}
 	} else if (email) {
@@ -63,7 +65,7 @@ export async function handleLogin(req, res) {
 					res.status(401).json(new ApiResponse('unauthorized', 401, null, 'Incorrect Password'))
 				}
 			} else {
-				res.status(401).json(new ApiResponse('false', 401, null, 'User not found'))
+				res.status(404).json(new ApiResponse('false', 404, null, 'User not found with this email address '))
 			}
 		}
 	} else {

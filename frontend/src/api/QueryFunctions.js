@@ -18,8 +18,8 @@ export async function createBlogQueryFunction(data) {
   let fetchData = await axiosInstance.post("/blog/create", data);
   return fetchData;
 }
-export async function getAllBlogsOfUser() {
-  let fetchData = await axiosInstance.get("/blog/user");
+export async function getAllBlogsOfUser(sort) {
+  let fetchData = await axiosInstance.get(`/blog/user?sort=${sort}`);
   return fetchData
 }
 export async function getBlogById(id) {

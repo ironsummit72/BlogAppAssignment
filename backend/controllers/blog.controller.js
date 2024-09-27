@@ -26,9 +26,11 @@ export async function createBlog(req, res) {
 }
 export async function getBlogsOfCurrentuser(req, res) {
 	const currentUser = req?.user.id
+	const sort=req.query.sort
+	console.log("sort data",sort);
+	
 	if (currentUser) {
-		const userData = await usermodel.findById(currentUser).populate('blogs')
-
+		const userData = await usermodel.findById(currentUser).populate({path:'blogs',options:{sort:{createdAt:parseInt(sort)}}})
 		if (userData) {
 			res.status(200).json(new ApiResponse('success', 200, userData?.blogs, 'User blogs fetched successfully'))
 		}

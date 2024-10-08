@@ -111,4 +111,4 @@ function LoginWithUsername() {
   );
 }
 
-export default LoginWithEmail;
+export default LoginWithUsername;

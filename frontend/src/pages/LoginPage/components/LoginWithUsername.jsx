@@ -24,7 +24,7 @@ import { useMutation } from "react-query";
 import { loginWithEmail } from "../../../api/QueryFunctions";
 import { useToast } from "../../../hooks/use-toast";
 
-function LoginWithEmail() {
+function LoginWithUsername() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const mutation = useMutation({
